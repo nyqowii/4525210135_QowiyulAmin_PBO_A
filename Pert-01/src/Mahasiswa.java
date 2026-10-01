@@ -22,11 +22,11 @@ public class Mahasiswa {
 
     // TODO 1: deklarasikan atribut. Perhatikan mana yang boleh berubah
     //         dan mana yang tidak. Gunakan final untuk yang tidak boleh berubah.
-    private final String nim;
-    private final String nama;
-    private double nilaiTugas;
-    private double nilaiUts;
-    private double nilaiUas;
+    private String nim;
+    private String nama;
+    private final double nilaiTugas;
+    private final double nilaiUts;
+    private final double nilaiUas;
 
     public Mahasiswa(String nim, String nama, double nilaiTugas, double nilaiUts, double nilaiUas) {
         // TODO 2: tolak NIM yang kosong atau null.
@@ -92,7 +92,7 @@ public class Mahasiswa {
 
     public String getNim()  { return nim; }
     public String getNama() { return nama; }
-
+    public double getNilaiAkhir() { return nilaiAkhir(); }
     @Override
     public String toString() {
         return String.format("%-10s %-18s akhir=%6.2f  mutu=%s",
