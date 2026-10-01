@@ -7,6 +7,7 @@ require_once __DIR__ . '/BangunDatar.php';
 $daftar = [
     new Lingkaran(7),
     new Persegi(5),
+    new Segitiga(3, 4, 5),
     // TODO Langkah 2: tambahkan new Segitiga(3, 4, 5)
 ];
 

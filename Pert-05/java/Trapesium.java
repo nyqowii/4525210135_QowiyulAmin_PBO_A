@@ -2,17 +2,17 @@ public class Trapesium extends BangunDatar {
 
     private final double sisiAtas;
     private final double sisiBawah;
-    private final double sisitengah;
+    private final double sisiSamping;
     private final double tinggi;
 
-    public Trapesium(double sisiAtas, double sisiBawah, double sisitengah, double tinggi) {
+    public Trapesium(double sisiAtas, double sisiBawah, double sisiSamping, double tinggi) {
         super("Trapesium");
         if (sisiAtas <= 0 || sisiBawah <= 0 || tinggi <= 0) {
             throw new IllegalArgumentException("Sisi dan tinggi harus > 0");
         }
         this.sisiAtas = sisiAtas;
         this.sisiBawah = sisiBawah;
-        this.sisitengah = sisitengah;
+        this.sisiSamping = sisiSamping;
         this.tinggi = tinggi;
     }
 
@@ -23,7 +23,7 @@ public class Trapesium extends BangunDatar {
 
     @Override
     public double keliling() {
-        return sisiAtas + sisiBawah + sisitengah + tinggi; 
+        return sisiAtas + sisiBawah + sisiSamping + tinggi; 
     }
 
 }

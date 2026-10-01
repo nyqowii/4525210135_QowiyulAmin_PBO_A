@@ -12,10 +12,44 @@ declare(strict_types=1);
 //         - properti readonly $tujuan
 //         - method abstract kirim(string $pesan): void
 //         - method saluran(): string yang menyebut nama salurannya
+class Notifikasi
+{
+    public function __construct(protected readonly string $tujuan) {}
+
+    abstract public function kirim(string $pesan): void;
+
+    public function saluran(): string
+    {
+        return static::class;
+    }
+}
 
 
 // TODO 2: buat tiga turunan: Email, SMS, WhatsApp.
 //         Masing-masing mencetak format pesan yang berbeda.
+class Email extends Notifikasi
+{
+    public function kirim(string $pesan): void
+    {
+        printf("Kirim email ke %s: %s%s", $this->tujuan, $pesan, PHP_EOL);
+    }
+}
+
+class SMS extends Notifikasi
+{
+    public function kirim(string $pesan): void
+    {
+        printf("Kirim SMS ke %s: %s%s", $this->tujuan, $pesan, PHP_EOL);
+    }
+}
+
+class WhatsApp extends Notifikasi
+{
+    public function kirim(string $pesan): void
+    {
+        printf("Kirim WhatsApp ke %s: %s%s", $this->tujuan, $pesan, PHP_EOL);
+    }
+}
 
 
 /**
