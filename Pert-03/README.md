@@ -88,4 +88,6 @@ Selain itu, program menguji penolakan penarikan yang melebihi batas, pemotongan 
 
 
 ## 3. Kesimpulan
-> [Isi Penjelasan.]
+> Berdasarkan praktikum yang telah dilakukan, saya memahami penerapan konsep Pemrograman Berorientasi Objek dalam pembuatan program rekening bank menggunakan bahasa Java dan PHP. Program ini memanfaatkan constructor untuk menginisialisasi data rekening, konstanta untuk menyimpan nilai tetap, serta method statis untuk menghitung jumlah rekening dan bunga tahunan.
+Selain itu, program memiliki fitur setoran, penarikan uang, dan pemotongan biaya administrasi yang dilengkapi dengan validasi agar transaksi berjalan sesuai aturan. Melalui praktikum ini, saya belajar bahwa validasi sangat penting untuk mencegah kesalahan, seperti penarikan melebihi saldo atau batas yang ditentukan. Saya juga memahami bahwa penggunaan class dan method dapat membuat kode lebih terstruktur, mudah dipahami, dan lebih mudah dikembangkan.
+Secara keseluruhan, praktikum ini menambah pemahaman saya mengenai pengelolaan data rekening serta penggunaan constructor, konstanta, dan anggota statis dalam Pemrograman Berorientasi Objek.
