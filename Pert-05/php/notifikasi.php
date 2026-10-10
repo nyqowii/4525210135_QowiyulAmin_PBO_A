@@ -12,9 +12,12 @@ declare(strict_types=1);
 //         - properti readonly $tujuan
 //         - method abstract kirim(string $pesan): void
 //         - method saluran(): string yang menyebut nama salurannya
-class Notifikasi
+abstract class Notifikasi
 {
-    public function __construct(protected readonly string $tujuan) {}
+    public function __construct(
+        public readonly string $tujuan,
+    ) {
+    }
 
     abstract public function kirim(string $pesan): void;
 
@@ -31,7 +34,7 @@ class Email extends Notifikasi
 {
     public function kirim(string $pesan): void
     {
-        printf("Kirim email ke %s: %s%s", $this->tujuan, $pesan, PHP_EOL);
+        echo "Mengirim email ke {$this->tujuan}: $pesan\n";
     }
 }
 
@@ -39,7 +42,7 @@ class SMS extends Notifikasi
 {
     public function kirim(string $pesan): void
     {
-        printf("Kirim SMS ke %s: %s%s", $this->tujuan, $pesan, PHP_EOL);
+        echo "Mengirim SMS ke {$this->tujuan}: $pesan\n";
     }
 }
 
@@ -47,7 +50,7 @@ class WhatsApp extends Notifikasi
 {
     public function kirim(string $pesan): void
     {
-        printf("Kirim WhatsApp ke %s: %s%s", $this->tujuan, $pesan, PHP_EOL);
+        echo "Mengirim WhatsApp ke {$this->tujuan}: $pesan\n";
     }
 }
 
@@ -64,11 +67,15 @@ class WhatsApp extends Notifikasi
 function kirimSemua(array $daftar, string $pesan): void
 {
     // TODO 3
+    foreach ($daftar as $notifikasi) {
+        $notifikasi->kirim($pesan);
+    }
+
 }
 
 // Uji setelah TODO 1-3 selesai:
-// kirimSemua([
-//     new Email('ani@univpancasila.ac.id'),
-//     new SMS('081234567890'),
-//     new WhatsApp('081234567890'),
-// ], 'Buku yang Anda pesan sudah tersedia.');
+kirimSemua([
+    new Email('ani@univpancasila.ac.id'),
+    new SMS('081234567890'),
+    new WhatsApp('081234567890'),
+], 'Buku yang Anda pesan sudah tersedia.');

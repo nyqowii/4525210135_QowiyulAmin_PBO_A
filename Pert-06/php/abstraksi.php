@@ -46,6 +46,9 @@ enum TipeBahanBakar: string
     /** TODO 4 */
     public function biayaPengisian(float $jumlah): float
     {
+        if ($jumlah < 0) {
+            throw new InvalidArgumentException('Jumlah pengisian tidak boleh negatif');
+        }
         return $this->hargaPerSatuan() * $jumlah;
     }
 
@@ -62,9 +65,8 @@ trait Loggable
 
     public function log(string $pesan): void
     {
-        $waktu = date('H:i:s');
         $namaKelas = static::class;
-        echo "[$waktu] [$namaKelas] $pesan", PHP_EOL;
+        echo "[$namaKelas] $pesan", PHP_EOL;
     }
 }
 
@@ -131,34 +133,35 @@ final class Mobil extends Kendaraan implements Movable, Fuelable
 
 // TODO Langkah 4: buat Sepeda — extends Kendaraan implements Movable,
 //                 TETAPI BUKAN Fuelable.
-
-    final class Sepeda extends Kendaraan implements Movable
+final class Sepeda extends Kendaraan implements Movable
+{
+    public function jumlahRoda(): int
     {
-        public function jumlahRoda(): int
-        {
-            return 2;
-        }
-        public function bergerak(): void
-        {
-            echo "Sepeda $this->merek dikayuh di jalan raya", PHP_EOL;
-        }
-        public function kecepatanMaksimum(): float
-        {
-            return 45.0;
-        }
+        return 2;
     }
 
-    class Pesanan
+    public function bergerak(): void
     {
-        use Loggable; // trait disisipkan
-
-        public function __construct(private string $idPesanan) {}
-
-        public function tandaiSelesai(): void
-        {
-            $this->log("Pesanan ($this->idPesanan) selesai diproses.");
-        }
+        echo "Sepeda $this->merek dikayuh di jalan raya", PHP_EOL;
     }
+
+    public function kecepatanMaksimum(): float
+    {
+        return 45.0;
+    }
+}
+
+class Pesanan
+{
+    use Loggable; // trait disisipkan
+
+    public function __construct(private string $idPesanan = 'umum') {}
+
+    public function tandaiSelesai(): void
+    {
+        $this->log("Pesanan ($this->idPesanan) selesai diproses.");
+    }
+}
 
 /**
  * TODO Langkah 5: buat kelas Pesanan yang juga memakai trait Loggable.
