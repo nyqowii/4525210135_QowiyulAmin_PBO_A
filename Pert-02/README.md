@@ -83,6 +83,7 @@ Selain menampilkan data, program juga menguji validasi dengan memasukkan nilai y
 
 ### Output
 *Output Program:*
+
 <img width="840" height="180" alt="image" src="https://github.com/user-attachments/assets/0703eaa4-7ab0-4a60-8bd6-39ac8173fc3a" />
 
 
