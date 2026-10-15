@@ -26,7 +26,7 @@ echo PHP_EOL, '=== Hanya yang Fuelable ===', PHP_EOL;
 isiPenuh($mobil);
 // TODO Langkah 4: hapus komentar berikut setelah Sepeda dibuat, jalankan,
 //                 dan salin pesan TypeError-nya ke keputusan.md.
-// isiPenuh($sepeda);
+isiPenuh($sepeda);
 
 echo PHP_EOL, '=== Enum punya perilaku ===', PHP_EOL;
 foreach (TipeBahanBakar::cases() as $t) {

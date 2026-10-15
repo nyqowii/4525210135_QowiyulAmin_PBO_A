@@ -37,16 +37,16 @@ enum TipeBahanBakar: string
     public function hargaPerSatuan(): float
     {
         return match ($this) {
-            self::Bensin => 12000,
-            self::Solar => 10500,
-            self::Listrik => 2500,
+            self::Bensin => 12000.0,
+            self::Solar => 10500.0,
+            self::Listrik => 2500.0,
         };
     }
 
     /** TODO 4 */
     public function biayaPengisian(float $jumlah): float
     {
-        return $jumlah * $this->hargaPerSatuan();
+        return $this->hargaPerSatuan() * $jumlah;
     }
 
     /** TODO 5: hanya Listrik yang ramah lingkungan. */
@@ -59,15 +59,12 @@ enum TipeBahanBakar: string
 // ══ TRAIT — penggunaan ulang horizontal, khas PHP ══════════════
 trait Loggable
 {
-    /**
-     * TODO 6: cetak baris log berformat:
-     *         [14:32:05] Mobil: servis berkala selesai
-    *
-     * Petunjuk: static::class memberi nama kelas yang memakai trait ini.
-     */
+
     public function log(string $pesan): void
     {
-        // TODO 6
+        $waktu = date('H:i:s');
+        $namaKelas = static::class;
+        echo "[$waktu] [$namaKelas] $pesan", PHP_EOL;
     }
 }
 
@@ -107,9 +104,25 @@ final class Mobil extends Kendaraan implements Movable, Fuelable
     public function jumlahRoda(): int { return 4; }
 
     // TODO 8: lengkapi kontrak Movable dan Fuelable.
-    public function bergerak(): void {}
-    public function kecepatanMaksimum(): float { return 0; }
-    public function isiBahanBakar(float $jumlah): void {}
+    public function bergerak(): void 
+    { 
+        echo "Mobil $this->merek melaju di jalan raya", PHP_EOL;
+    }
+    public function kecepatanMaksimum(): float 
+    { 
+        return 100.0; 
+    }
+    public function isiBahanBakar(float $jumlah): void 
+    { 
+        if ($jumlah <= 0) {
+            throw new InvalidArgumentException("Jumlah isi tidak boleh nol atau negatif");
+        }
+        if ($this->isiTangki + $jumlah > $this->kapasitas) {
+            throw new InvalidArgumentException("Jumlah isi melebihi kapasitas tangki");
+        }
+        $this->isiTangki += $jumlah;
+        $this->log("Diisi bahan bakar sebanyak ($jumlah)");
+    }
 
     public function kapasitasTangki(): float { return $this->kapasitas; }
     public function tipeBahanBakar(): TipeBahanBakar { return TipeBahanBakar::Bensin; }
@@ -118,6 +131,34 @@ final class Mobil extends Kendaraan implements Movable, Fuelable
 
 // TODO Langkah 4: buat Sepeda — extends Kendaraan implements Movable,
 //                 TETAPI BUKAN Fuelable.
+
+    final class Sepeda extends Kendaraan implements Movable
+    {
+        public function jumlahRoda(): int
+        {
+            return 2;
+        }
+        public function bergerak(): void
+        {
+            echo "Sepeda $this->merek dikayuh di jalan raya", PHP_EOL;
+        }
+        public function kecepatanMaksimum(): float
+        {
+            return 45.0;
+        }
+    }
+
+    class Pesanan
+    {
+        use Loggable; // trait disisipkan
+
+        public function __construct(private string $idPesanan) {}
+
+        public function tandaiSelesai(): void
+        {
+            $this->log("Pesanan ($this->idPesanan) selesai diproses.");
+        }
+    }
 
 /**
  * TODO Langkah 5: buat kelas Pesanan yang juga memakai trait Loggable.
