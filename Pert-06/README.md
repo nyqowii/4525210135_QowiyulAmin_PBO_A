@@ -164,6 +164,7 @@ Program ini menerapkan konsep interface untuk menentukan kemampuan suatu objek t
 
 ### Output    
 **Output Program:**
+
 <img width="1408" height="383" alt="image" src="https://github.com/user-attachments/assets/2f8c3aa3-f3d8-4539-a4f4-f1ff7e1ce507" />
 ---
 
