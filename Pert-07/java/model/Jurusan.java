@@ -28,8 +28,11 @@ public class Jurusan {
         if (m == null) {
             throw new IllegalArgumentException("Mahasiswa tidak boleh null");
         }
-        
-        this.mahasiswa.add(m);
+        boolean sudahTerdaftar = this.mahasiswa.stream()
+                .anyMatch(terdaftar -> terdaftar.getNim().equals(m.getNim()));
+        if (!sudahTerdaftar) {
+            this.mahasiswa.add(m);
+        }
     }
 
     /** TODO 2: lepaskan dari jurusan ini. Objeknya TETAP HIDUP di luar sana. */
@@ -39,7 +42,7 @@ public class Jurusan {
 
     /** TODO 3: kembalikan salinan tak-berubah. */
     public List<Mahasiswa> getMahasiswa() {
-        return List.copyOf(this.mahasiswa);   // ganti
+        return List.copyOf(this.mahasiswa);
     }
 
     public String getNama() { return nama; }

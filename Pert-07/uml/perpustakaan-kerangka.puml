@@ -25,14 +25,59 @@ package model {
   ' TODO 1: tambahkan tiga turunan Koleksi — Buku, Majalah, Skripsi.
   '         Perhatikan masa pinjam masing-masing.
 
+  class Buku {
+    + masaPinjamHari() : int
+    + bolehDipinjam() : boolean
+    + tambahBab(nomor : int, judul : String) : void
+    + getBab() : List<Bab>
+  }
+  class Majalah {
+    + masaPinjamHari() : int
+    + bolehDipinjam() : boolean
+  }
+  class Skripsi {
+    + masaPinjamHari() : int
+    + bolehDipinjam() : boolean
+  }
+
   class Bab {
     - nomor : int
     - judul : String
   }
+  class Jurusan {
+    - kode : String
+    - nama : String
+  }
+  class Mahasiswa {
+    - nim : String
+    - nama : String
+  }
 
   ' TODO 2: tambahkan kelas Anggota dan Peminjaman beserta atributnya.
+  class Anggota {
+    - nomorAnggota : String {readOnly}
+    - nama : String
+    - jenisKeanggotaan : JenisKeanggotaan
+  }
+  class Peminjaman {
+    - tanggalPinjam : LocalDate
+    - tanggalJatuhTempo : LocalDate
+    - tanggalKembali : LocalDate [0..1]
+    + hitungDenda(tanggal : LocalDate) : long
+    + kembalikan() : void
+  }
 
   ' TODO 3: tambahkan enum StatusKoleksi dan enum/kelas JenisKeanggotaan.
+  enum StatusKoleksi {
+    TERSEDIA
+    DIPINJAM
+    RUSAK
+    HILANG
+  }
+  class JenisKeanggotaan {
+    - nama : String
+    - dendaPerHari : long
+  }
 
   ' ── RELASI ───────────────────────────────────────────────
   ' TODO 4: lengkapi relasi berikut. Untuk setiap relasi, tentukan
@@ -44,7 +89,16 @@ package model {
   ' Anggota ? Peminjaman       -> pikirkan: peminjaman bisa hidup tanpa anggota?
   ' Peminjaman ? Koleksi       -> pikirkan: koleksi bisa hidup tanpa peminjaman?
 
-  Koleksi <|-- Bab : ' TODO 5: relasi ini SALAH. Perbaiki.
+  ' TODO 5: relasi ini SALAH. Perbaiki.
+  Koleksi <|-- Buku
+  Koleksi <|-- Majalah
+  Koleksi <|-- Skripsi
+  Buku "1" *-- "0..*" Bab : terdiri dari
+  Jurusan "0..*" o-- "0..*" Mahasiswa : menaungi
+  Anggota "1" -- "0..*" Peminjaman : memiliki riwayat
+  Peminjaman "0..*" --> "1" Koleksi : meminjam
+  Koleksi --> StatusKoleksi
+  Anggota --> JenisKeanggotaan
 
 }
 
@@ -55,10 +109,15 @@ package service {
     + pinjam(nomorAnggota : String, nomorInduk : String) : Peminjaman
     + kembalikan(nomorAnggota : String, nomorInduk : String) : void
     + cariKoleksi(nomorInduk : String) : Koleksi
+    + getKoleksiDipinjam() : List<Koleksi>
+    + getRiwayatPeminjaman(nomorAnggota : String) : List<Peminjaman>
   }
 
   ' TODO 6: tambahkan relasi antara PerpustakaanService dengan Koleksi
   '         dan Anggota. Agregasi atau komposisi? Beri alasannya di analisis.md.
+  PerpustakaanService "1" o-- "0..*" Koleksi : mengelola
+  PerpustakaanService "1" o-- "0..*" Anggota : mendaftarkan
+  PerpustakaanService "1" o-- "0..*" Peminjaman : mencatat
 }
 
 @enduml

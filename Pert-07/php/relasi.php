@@ -41,6 +41,8 @@ final class Bab
 
 final class Buku
 {
+    /** @var Bab[] */
+    private array $bab = [];
 
     public function __construct(
         private readonly string $nomorInduk,
@@ -50,7 +52,7 @@ final class Buku
     ) {
         // TODO 2: tolak jumlah eksemplar negatif.
         if ($jumlahEksemplar < 0) {
-            throw new Error("Jumlah eksemplar tidak boleh negatif:");
+            throw new InvalidArgumentException("Jumlah eksemplar tidak boleh negatif");
         }
     }
 
@@ -75,7 +77,7 @@ final class Buku
     /** TODO 4 */
     public function kurangiStok(): void {
         if ($this->jumlahEksemplar <= 0) {
-            throw new Error("Jumlah Eksemplar = 0.");
+            throw new LogicException("Stok buku tidak tersedia");
         }
         $this->jumlahEksemplar--;
     }
@@ -115,6 +117,11 @@ final class Jurusan
 
     /** TODO 5: terima objek dari luar (agregasi). Jangan menambahkan duplikat. */
     public function daftarkan(Mahasiswa $m): void {
+        foreach ($this->mahasiswa as $terdaftar) {
+            if ($terdaftar->getNim() === $m->getNim()) {
+                return;
+            }
+        }
         array_push($this->mahasiswa, $m);
     }
 

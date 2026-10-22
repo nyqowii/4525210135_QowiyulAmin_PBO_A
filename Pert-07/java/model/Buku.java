@@ -13,23 +13,17 @@ import java.util.List;
  *
  * Lengkapi TODO sehingga ketiganya terpenuhi.
  */
-public class Buku {
+public class Buku extends Koleksi {
 
-    private final String nomorInduk;
-    private final String judul;
-    private final String penulis;
-    private int jumlahEksemplar;
     private final List<Bab> bab = new ArrayList<>();
 
     public Buku(String nomorInduk, String judul, String penulis, int jumlahEksemplar) {
+        this(nomorInduk, judul, penulis, 0, jumlahEksemplar);
+    }
+
+    public Buku(String nomorInduk, String judul, String penulis, int tahun, int jumlahEksemplar) {
         // TODO 1: tolak jumlah eksemplar negatif.
-        if (jumlahEksemplar < 0) {
-            throw new IllegalArgumentException("Jumlah eksemplar tidak boleh negatif");
-        }
-        this.nomorInduk = nomorInduk;
-        this.judul = judul;
-        this.penulis = penulis;
-        this.jumlahEksemplar = jumlahEksemplar;
+        super(nomorInduk, judul, penulis, tahun, jumlahEksemplar);
     }
 
     /**
@@ -49,30 +43,22 @@ public class Buku {
      *         percobaan 1, lalu perbaiki. Rasakan bedanya.
      */
     public List<Bab> getBab() {
-        return List.copyOf(this.bab);   // ganti
+        return List.copyOf(this.bab);
     }
-
-    public boolean tersedia() { return jumlahEksemplar > 0; }
 
     /** TODO 4: kurangi stok; tolak bila sudah nol. */
+    @Override
     public void kurangiStok() {
-        if (jumlahEksemplar == 0) {
-            System.out.println("Stok Eksamplar = 0");
-            return;
-        }
-        this.jumlahEksemplar--;
+        super.kurangiStok();
     }
 
-    public void tambahStok() { jumlahEksemplar++; }
-
-    public String getNomorInduk()  { return nomorInduk; }
-    public String getJudul()       { return judul; }
-    public int getJumlahEksemplar() { return jumlahEksemplar; }
+    @Override public int masaPinjamHari() { return 14; }
+    @Override public boolean bolehDipinjam() { return true; }
 
     @Override
     public String toString() {
         return String.format("%-32s %-16s [%d eks, %d bab]",
-                judul, penulis, jumlahEksemplar, bab.size());
+                getJudul(), getPenulis(), getJumlahEksemplar(), bab.size());
     }
 
     /**
