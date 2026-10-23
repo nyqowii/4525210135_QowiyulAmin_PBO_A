@@ -15,80 +15,52 @@
 
 ### 1.1. File: HaloObjek.java
 *Penjelasan Kode:*
-> Program Mahasiswa.java menerapkan konsep enkapsulasi dalam Java untuk mengelola data mahasiswa dan nilai akademik. Program menggunakan atribut private untuk membatasi akses data, serta melakukan validasi agar NIM tidak   kosong dan nilai berada pada rentang 0–100.
-
-Nilai akhir dihitung berdasarkan bobot tugas 30%, UTS 30%, dan UAS 40%. Selanjutnya, method hurufMutu() menentukan nilai A sampai E berdasarkan hasil perhitungan. Getter digunakan untuk mengambil data, sedangkan toString() membantu menampilkan informasi mahasiswa dalam format teks.
+> Program HaloObjek.java merupakan program sederhana untuk memahami konsep dasar Object-Oriented Programming (OOP) dalam Java. Class ini memiliki dua atribut, yaitu nama dan nim, yang menggunakan access modifier private agar data tidak dapat diakses secara langsung dari luar class.
+Constructor HaloObjek() digunakan untuk mengisi data nama dan NIM ketika objek dibuat. Kata kunci this digunakan untuk membedakan atribut milik objek dengan parameter constructor. Method sapa() mengembalikan teks sapaan berdasarkan data yang tersimpan pada objek.
+Pada method main(), dibuat dua objek, yaitu saya dan temanSekelas, dengan data yang berbeda. Keduanya kemudian menampilkan sapaan masing-masing. Program ini menunjukkan bahwa satu class dapat digunakan untuk membuat beberapa objek yang memiliki data berbeda.
 
 *Bukti Eksekusi (Screenshot):*
 * *Before* (Kondisi awal / Kesalahan kompilasi):
-<img width="1527" height="931" alt="image" src="https://github.com/user-attachments/assets/b9480b5c-5541-47b4-8c0d-d5bb7206ee6a" />
-<img width="1560" height="856" alt="image" src="https://github.com/user-attachments/assets/98ad5cb1-1f63-4265-959d-a0e5e6831b6f" />
+<img width="1561" height="934" alt="image" src="https://github.com/user-attachments/assets/e048e67f-bf61-44de-bf8e-29e6aba7f5b0" />
+<img width="1557" height="203" alt="image" src="https://github.com/user-attachments/assets/1d32901e-54d8-4431-8fa2-4217beefdcc4" />
+
 
 * *After* (Kondisi akhir / Eksekusi berhasil):
-<img width="1560" height="933" alt="image" src="https://github.com/user-attachments/assets/5f6ac41c-bf79-44e4-987d-1e987ef2c15a" />
-<img width="1519" height="860" alt="image" src="https://github.com/user-attachments/assets/37b956f2-cd9b-4c4c-9668-baa04bd689c2" />
-<img width="1539" height="544" alt="image" src="https://github.com/user-attachments/assets/9fe5fe02-f3db-418a-918b-39a19152816e" />
-
-### 1.2. File: `Main.java`
-**Penjelasan Kode:**
-> Program Main.java berfungsi sebagai program utama untuk menguji class Mahasiswa. Program membuat beberapa objek mahasiswa dengan data NIM, nama, serta nilai tugas, UTS, dan UAS, kemudian menampilkan rekap nilai setiap mahasiswa menggunakan perulangan for-each.
-Selain itu, program menggunakan try-catch untuk menguji validasi data. Nilai di luar rentang 0–100 dan NIM kosong akan ditolak dengan menampilkan pesan kesalahan. Dengan demikian, program ini memastikan aturan validasi pada class Mahasiswa berjalan sesuai ketentuan.
-
-**Bukti Eksekusi (Screenshot):**
-* **Before** *(Kondisi awal / Kesalahan kompilasi)*:
-<img width="1551" height="935" alt="image" src="https://github.com/user-attachments/assets/94e5131e-6421-4e93-af86-99468f5b3c6b" />
-
-
-* **After** *(Kondisi akhir / Eksekusi berhasil)*:
-<img width="1551" height="935" alt="image" src="https://github.com/user-attachments/assets/94e5131e-6421-4e93-af86-99468f5b3c6b" />
-
+<img width="1558" height="939" alt="image" src="https://github.com/user-attachments/assets/82c760a6-9f81-4f05-9bb0-7fb9d05fe6a9" />
+<img width="1547" height="248" alt="image" src="https://github.com/user-attachments/assets/cd0d40cf-f841-4267-b32f-d79f5fadd580" />
 
 ### Output
 *Output Program:*
 
-<img width="820" height="178" alt="Screenshot 2026-10-10 222814" src="https://github.com/user-attachments/assets/90c8f010-77bc-48cc-addc-90e66031a016" />
+<img width="862" height="183" alt="image" src="https://github.com/user-attachments/assets/60700a58-f460-4693-af9a-6d9751de1e42" />
+
 
 ## 2. Implementasi PHP
 
-### 2.1. File: Mahasiswa.php
+### 2.1. File: halo_objek.php
 *Penjelasan Kode:*
-> File Mahasiswa.php berisi implementasi pengelolaan data mahasiswa menggunakan bahasa PHP. Di dalamnya terdapat proses pemeriksaan NIM dan nilai agar data yang disimpan sesuai dengan aturan yang berlaku.
-Program menghitung nilai akhir berdasarkan persentase tugas, UTS, dan UAS, lalu menentukan huruf mutu dari hasil perhitungan tersebut. Konsep enkapsulasi diterapkan untuk menjaga data, sedangkan fungsi atau method digunakan agar proses pengolahan nilai lebih terstruktur dan mudah dipahami.
+> Program halo_objek.php merupakan program sederhana untuk mempelajari konsep dasar OOP menggunakan PHP. Class HaloObjek memiliki dua properti, yaitu $nama dan $nim, yang menggunakan access modifier private agar hanya dapat diakses secara langsung dari dalam class.
+Method __construct() digunakan untuk mengisi nama dan NIM saat objek dibuat. Kata kunci $this digunakan untuk mengakses properti milik objek, sedangkan operator -> digunakan untuk mengakses properti dan method dalam PHP. Method sapa() mengembalikan teks sapaan berdasarkan data yang tersimpan.
+Pada bagian akhir, program membuat dua objek, yaitu $saya dan $temanSekelas, kemudian menampilkan sapaan masing-masing. Program ini menunjukkan bahwa satu class dapat digunakan untuk membuat beberapa objek dengan data yang berbeda.
 
 *Bukti Eksekusi (Screenshot):*
 * *Before* (Kondisi awal / Galat logika):
-<img width="1546" height="930" alt="image" src="https://github.com/user-attachments/assets/7658cf06-5153-4f42-8e5b-432160b94e6c" />
-<img width="1532" height="477" alt="image" src="https://github.com/user-attachments/assets/dd454e18-2879-4cb7-a356-529b1dfaa611" />
+<img width="1555" height="933" alt="image" src="https://github.com/user-attachments/assets/010729e1-bb91-4e4d-bfae-a3c1c97c9448" />
+<img width="1542" height="94" alt="image" src="https://github.com/user-attachments/assets/b0eac49d-d1a8-4d95-bcc9-bb95480e4678" />
 
 
 * *After* (Kondisi akhir / Eksekusi berhasil):
-<img width="1561" height="938" alt="image" src="https://github.com/user-attachments/assets/f2dc5297-9a86-4970-92c0-b754ded84fbd" />
-<img width="1561" height="595" alt="image" src="https://github.com/user-attachments/assets/69e5d94f-756e-4c16-a4f9-03e1210f9802" />
-
-
-
-### 2.2. File: main.php
-*Penjelasan Kode:*
-> Program main.php berperan sebagai bagian utama untuk menjalankan dan menguji class Mahasiswa. Program membuat beberapa objek mahasiswa, kemudian menampilkan informasi nilai akhir dan huruf mutu masing-masing.
-Selain menampilkan data, program juga menguji validasi dengan memasukkan nilai yang melebihi batas serta NIM kosong. Jika data tidak memenuhi ketentuan, program akan menangani kesalahan dan menampilkan pesan penolakan. Dengan pengujian ini, fungsi validasi pada Mahasiswa.php dapat diperiksa.
-
-*Bukti Eksekusi (Screenshot):*
-* *Before* (Kondisi awal / Galat logika):
-<img width="1537" height="799" alt="image" src="https://github.com/user-attachments/assets/5e91d365-05ee-4f7d-8e03-50eea6cbb7fb" />
-
-
-* *After* (Kondisi akhir / Eksekusi berhasil):
-<img width="1537" height="799" alt="image" src="https://github.com/user-attachments/assets/caf57d98-beae-43fb-b8c2-5bf798c7d0d9" />
+<img width="1561" height="938" alt="image" src="https://github.com/user-attachments/assets/875a47ba-7d73-4ae9-8fe1-5b07ca99cc34" />
+<img width="1547" height="127" alt="image" src="https://github.com/user-attachments/assets/1dfb3270-68ef-49f9-952a-d77ee86fd8a5" />
 
 
 ### Output
 *Output Program:*
 
-
-<img width="840" height="180" alt="image" src="https://github.com/user-attachments/assets/0703eaa4-7ab0-4a60-8bd6-39ac8173fc3a" />
-
+<img width="905" height="189" alt="image" src="https://github.com/user-attachments/assets/48a93780-6c87-4fc1-9278-244f8182863a" />
 
 
 ## 3. Kesimpulan
-> Berdasarkan kode program tersebut, class Mahasiswa menerapkan konsep enkapsulasi dengan membatasi akses langsung ke atribut serta melakukan validasi sebelum data disimpan. Program juga menggunakan konstanta untuk          mengatur bobot nilai, method untuk menghitung nilai akhir, dan percabangan untuk menentukan huruf mutu.
-  Melalui program ini, saya memahami bahwa enkapsulasi tidak hanya berkaitan dengan penggunaan atribut private, tetapi juga dengan menjaga agar data tetap memenuhi aturan yang sudah ditentukan selama program digunakan.
+> Berdasarkan program HaloObjek.java dan halo_objek.php, dapat disimpulkan bahwa konsep dasar Object-Oriented Programming (OOP) dapat diterapkan baik menggunakan Java maupun PHP. Kedua program menggunakan class sebagai cetakan untuk membuat objek, atribut untuk menyimpan nama dan NIM, serta constructor untuk mengisi data saat objek dibuat.
+Kedua program juga menerapkan encapsulation melalui access modifier private, sehingga data tidak dapat diakses secara langsung dari luar class. Method sapa() digunakan untuk menampilkan sapaan sesuai data yang dimiliki setiap objek. Walaupun memiliki sintaks yang berbeda, Java menggunakan this dan PHP menggunakan $this dengan operator ->, keduanya memiliki tujuan yang sama, yaitu mengakses data milik objek.
+Melalui latihan ini, dapat dipahami bahwa satu class dapat digunakan untuk membuat beberapa objek dengan data yang berbeda, tanpa perlu menulis ulang method untuk setiap objek. Dengan demikian, pemahaman dasar tentang class, object, constructor, encapsulation, dan method menjadi bekal penting untuk mempelajari pemrograman berorientasi objek lebih lanjut.
