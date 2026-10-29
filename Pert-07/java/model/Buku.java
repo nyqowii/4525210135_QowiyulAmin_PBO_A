@@ -7,58 +7,82 @@ import java.util.List;
  * Sesi 7 — KOMPOSISI.
  *
  * Tiga hal yang membuat sebuah relasi benar-benar komposisi:
- *   1. tidak ada constructor atau method yang MENERIMA objek bagian dari luar
- *   2. objek bagian dibuat DI DALAM induk
- *   3. getter mengembalikan salinan yang tidak bisa diubah
+ * 1. tidak ada constructor atau method yang MENERIMA objek bagian dari luar
+ * 2. objek bagian dibuat DI DALAM induk
+ * 3. getter mengembalikan salinan yang tidak bisa diubah
  *
- * Lengkapi TODO sehingga ketiganya terpenuhi.
+ * Buku membuat dan mengelola seluruh Bab yang dimilikinya.
  */
-public class Buku extends Koleksi {
+public class Buku {
 
+    private final String nomorInduk;
+    private final String judul;
+    private final String penulis;
+    private int jumlahEksemplar;
     private final List<Bab> bab = new ArrayList<>();
 
     public Buku(String nomorInduk, String judul, String penulis, int jumlahEksemplar) {
-        this(nomorInduk, judul, penulis, 0, jumlahEksemplar);
-    }
-
-    public Buku(String nomorInduk, String judul, String penulis, int tahun, int jumlahEksemplar) {
-        // TODO 1: tolak jumlah eksemplar negatif.
-        super(nomorInduk, judul, penulis, tahun, jumlahEksemplar);
+        if (jumlahEksemplar < 0) {
+            throw new IllegalArgumentException("Jumlah eksemplar tidak boleh negatif");
+        }
+        this.nomorInduk = nomorInduk;
+        this.judul = judul;
+        this.penulis = penulis;
+        this.jumlahEksemplar = jumlahEksemplar;
     }
 
     /**
-     * TODO 2: satu-satunya cara Bab lahir.
-     *         Perhatikan: parameternya nomor dan judul, BUKAN objek Bab.
-     *         Kalau Anda menerima objek Bab dari luar, ini menjadi agregasi.
+     * Bab dibuat di dalam Buku, bukan diterima sebagai objek dari luar.
      */
     public void tambahBab(int nomor, String judulBab) {
-        Bab objekBab = new Bab(nomor, judulBab);
-        this.bab.add(objekBab);
+        if (nomor <= 0) {
+            throw new IllegalArgumentException("Nomor bab harus positif");
+        }
+        if (judulBab == null || judulBab.isBlank()) {
+            throw new IllegalArgumentException("Judul bab tidak boleh kosong");
+        }
+        bab.add(new Bab(nomor, judulBab));
     }
 
     /**
-     * TODO 3: kembalikan salinan yang tidak bisa diubah.
-     *         Petunjuk: List.copyOf(...)
-     *         Coba dulu mengembalikan `bab` apa adanya, jalankan bukti-relasi.md
-     *         percobaan 1, lalu perbaiki. Rasakan bedanya.
+     * Mengembalikan daftar immutable agar pemanggil tidak dapat mengubah bagian.
      */
     public List<Bab> getBab() {
-        return List.copyOf(this.bab);
+        return List.copyOf(bab);
     }
 
-    /** TODO 4: kurangi stok; tolak bila sudah nol. */
-    @Override
+    public boolean tersedia() {
+        return jumlahEksemplar > 0;
+    }
+
+    /** Mengurangi stok satu eksemplar jika tersedia. */
     public void kurangiStok() {
-        super.kurangiStok();
+        if (!tersedia()) {
+            throw new IllegalStateException("Stok buku sudah habis");
+        }
+        jumlahEksemplar--;
     }
 
-    @Override public int masaPinjamHari() { return 14; }
-    @Override public boolean bolehDipinjam() { return true; }
+    public void tambahStok() {
+        jumlahEksemplar++;
+    }
+
+    public String getNomorInduk() {
+        return nomorInduk;
+    }
+
+    public String getJudul() {
+        return judul;
+    }
+
+    public int getJumlahEksemplar() {
+        return jumlahEksemplar;
+    }
 
     @Override
     public String toString() {
         return String.format("%-32s %-16s [%d eks, %d bab]",
-                getJudul(), getPenulis(), getJumlahEksemplar(), bab.size());
+                judul, penulis, jumlahEksemplar, bab.size());
     }
 
     /**
@@ -74,9 +98,17 @@ public class Buku extends Koleksi {
             this.judul = judul;
         }
 
-        public int getNomor()    { return nomor; }
-        public String getJudul() { return judul; }
+        public int getNomor() {
+            return nomor;
+        }
 
-        @Override public String toString() { return "Bab " + nomor + ": " + judul; }
+        public String getJudul() {
+            return judul;
+        }
+
+        @Override
+        public String toString() {
+            return "Bab " + nomor + ": " + judul;
+        }
     }
 }

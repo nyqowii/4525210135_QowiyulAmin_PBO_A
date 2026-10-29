@@ -9,34 +9,21 @@ declare(strict_types=1);
 final class Bab
 {
     /**
-     * TODO 1: buat constructor readonly untuk $nomor dan $judul.
-     *         Perhatikan: agar benar-benar komposisi, kelas ini hanya
-     *         boleh dibuat dari dalam Buku. PHP tidak punya nested class
-     *         seperti Java, jadi disiplin ini dijaga lewat konvensi —
-     *         tuliskan catatannya di bukti-relasi.md.
+     * Bab dibuat oleh Buku; PHP tidak menyediakan nested class atau friend class.
      */
-
     public function __construct(
-        private readonly int $nomor,
-        private readonly string $judul,
-    ) 
-    {}
-
-    public function getNomor(): int
-    {
-        return $this->nomor;
-    }
-
-    public function getJudul(): string
-    {
-        return $this->judul;
+        public readonly int $nomor,
+        public readonly string $judul,
+    ) {
+        if ($nomor <= 0 || trim($judul) === '') {
+            throw new InvalidArgumentException('Nomor bab harus positif dan judul tidak boleh kosong');
+        }
     }
 
     public function __toString(): string
     {
-        return 'Bab '. $this->getNomor(). ": " . $this->getJudul();
+        return 'Bab ' . $this->nomor . ': ' . $this->judul;
     }
-
 }
 
 final class Buku
@@ -50,16 +37,15 @@ final class Buku
         private readonly string $penulis,
         private int $jumlahEksemplar,
     ) {
-        // TODO 2: tolak jumlah eksemplar negatif.
         if ($jumlahEksemplar < 0) {
-            throw new InvalidArgumentException("Jumlah eksemplar tidak boleh negatif");
+            throw new InvalidArgumentException('Jumlah eksemplar tidak boleh negatif');
         }
     }
 
-    /** TODO 3: satu-satunya cara Bab lahir. Parameternya nomor dan judul, bukan objek Bab. */
+    /** Membuat Bab dari nilai-nilainya agar kepemilikan tetap pada Buku. */
     public function tambahBab(int $nomor, string $judulBab): void
     {
-        array_push($this->bab, new Bab($nomor, $judulBab));
+        $this->bab[] = new Bab($nomor, $judulBab);
     }
 
     /**
@@ -74,10 +60,11 @@ final class Buku
 
     public function tersedia(): bool { return $this->jumlahEksemplar > 0; }
 
-    /** TODO 4 */
-    public function kurangiStok(): void {
-        if ($this->jumlahEksemplar <= 0) {
-            throw new LogicException("Stok buku tidak tersedia");
+    /** Mengurangi stok satu eksemplar jika tersedia. */
+    public function kurangiStok(): void
+    {
+        if (!$this->tersedia()) {
+            throw new LogicException('Stok buku sudah habis');
         }
         $this->jumlahEksemplar--;
     }
@@ -115,23 +102,21 @@ final class Jurusan
         private readonly string $nama,
     ) {}
 
-    /** TODO 5: terima objek dari luar (agregasi). Jangan menambahkan duplikat. */
-    public function daftarkan(Mahasiswa $m): void {
-        foreach ($this->mahasiswa as $terdaftar) {
-            if ($terdaftar->getNim() === $m->getNim()) {
-                return;
-            }
+    /** Menerima objek dari luar dan mencegah pendaftaran ganda. */
+    public function daftarkan(Mahasiswa $m): void
+    {
+        if (!in_array($m, $this->mahasiswa, true)) {
+            $this->mahasiswa[] = $m;
         }
-        array_push($this->mahasiswa, $m);
     }
 
-    /** TODO 6: lepaskan dari jurusan. Objeknya tetap hidup. */
-    public function keluarkan(Mahasiswa $m): void {
-        $key = array_search($m, $this->mahasiswa, true);
-        if ($key !== false) {
-            unset($this->mahasiswa[$key]);
-            $this->mahasiswa = array_values($this->mahasiswa); 
-        }
+    /** Melepaskan referensi tanpa mengubah siklus hidup objek mahasiswa. */
+    public function keluarkan(Mahasiswa $m): void
+    {
+        $this->mahasiswa = array_values(array_filter(
+            $this->mahasiswa,
+            static fn (Mahasiswa $terdaftar): bool => $terdaftar !== $m,
+        ));
     }
 
     /** @return Mahasiswa[] */

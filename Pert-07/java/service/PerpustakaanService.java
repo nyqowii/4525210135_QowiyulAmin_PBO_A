@@ -1,130 +1,81 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import model.Anggota;
-import model.Koleksi;
-import model.Peminjaman;
+import java.util.Map;
+import java.util.Set;
+import model.Buku;
 
 /**
- * Kerangka lapisan layanan.
- * Pada sesi 7 cukup struktur dan tanda tangan method; isinya boleh minimal.
+ * Layanan peminjaman sederhana untuk model Buku pada sesi 7.
  * Lapisan ini akan diperdalam pada sesi 10 (exception) dan 12 (SOLID).
- *
- * TODO: sesuaikan seluruh isi berkas ini dengan class diagram Anda sendiri.
- *       Kelas dan method di sini hanya contoh awal.
  */
 public class PerpustakaanService {
 
-    // TODO 1: tentukan bagaimana layanan ini menyimpan koleksi dan anggota.
-    //         Agregasi atau komposisi? Tuliskan alasannya di analisis.md,
-    //         lalu wujudkan keputusan itu di sini.
-    private final List<Koleksi> koleksi = new ArrayList<>();
-    private final List<Anggota> anggota = new ArrayList<>();
-    private final List<Peminjaman> peminjaman = new ArrayList<>();
+    private final List<Buku> koleksi = new ArrayList<>();
+    private final Set<String> anggota = new HashSet<>();
+    private final Map<String, Set<String>> peminjamanAktif = new HashMap<>();
 
-    public void tambahKoleksi(Koleksi koleksi) {
-        if (koleksi == null) {
-            throw new IllegalArgumentException("Koleksi tidak boleh null");
+    public void daftarkanAnggota(String nomorAnggota) {
+        if (nomorAnggota == null || nomorAnggota.isBlank()) {
+            throw new IllegalArgumentException("Nomor anggota tidak boleh kosong");
         }
-        if (cariKoleksi(koleksi.getNomorInduk()) != null) {
-            throw new IllegalArgumentException("Nomor induk koleksi sudah terdaftar");
+        if (!anggota.add(nomorAnggota)) {
+            throw new IllegalArgumentException("Anggota sudah terdaftar");
         }
-        this.koleksi.add(koleksi);
     }
 
-    public void daftarkanAnggota(Anggota anggota) {
-        if (anggota == null) {
-            throw new IllegalArgumentException("Anggota tidak boleh null");
+    public void tambahKoleksi(Buku buku) {
+        if (buku == null) {
+            throw new IllegalArgumentException("Buku tidak boleh null");
         }
-        if (cariAnggota(anggota.getNomorAnggota()) != null) {
-            throw new IllegalArgumentException("Nomor anggota sudah terdaftar");
+        if (cariKoleksi(buku.getNomorInduk()) != null) {
+            throw new IllegalArgumentException("Nomor induk buku sudah terdaftar");
         }
-        this.anggota.add(anggota);
+        koleksi.add(buku);
     }
 
-    public Koleksi cariKoleksi(String nomorInduk) {
-        // TODO 3
-        for (Koleksi item : this.koleksi) {
-            if (item.getNomorInduk().equals(nomorInduk)) {
-                return item;
+    public Buku cariKoleksi(String nomorInduk) {
+        for (Buku buku : koleksi) {
+            if (buku.getNomorInduk().equals(nomorInduk)) {
+                return buku;
             }
         }
         return null;
     }
 
-    public Peminjaman pinjam(String nomorAnggota, String nomorInduk) {
-        // TODO 4: terapkan aturan bisnis dari deskripsi-kebutuhan.md.
-        Anggota peminjam = cariAnggota(nomorAnggota);
-        Koleksi item = cariKoleksi(nomorInduk);
-        if (peminjam == null) {
-            throw new IllegalArgumentException("Anggota tidak ditemukan");
+    public void pinjam(String nomorAnggota, String nomorInduk) {
+        if (!anggota.contains(nomorAnggota)) {
+            throw new IllegalArgumentException("Anggota belum terdaftar");
         }
-        if (item == null) {
-            throw new IllegalArgumentException("Koleksi tidak ditemukan");
+        Buku buku = cariKoleksi(nomorInduk);
+        if (buku == null) {
+            throw new IllegalArgumentException("Buku tidak ditemukan");
         }
-        long pinjamanAktif = this.peminjaman.stream()
-                .filter(p -> p.getAnggota().equals(peminjam) && !p.isDikembalikan())
-                .count();
-        if (pinjamanAktif >= 3) {
-            throw new IllegalStateException("Anggota tidak boleh meminjam lebih dari tiga koleksi");
+        Set<String> pinjamanAnggota = peminjamanAktif.computeIfAbsent(
+                nomorAnggota, k -> new HashSet<>());
+        if (pinjamanAnggota.size() >= 3) {
+            throw new IllegalStateException("Anggota tidak boleh meminjam lebih dari tiga buku");
         }
-        if (!item.bolehDipinjam()) {
-            throw new IllegalStateException("Jenis koleksi ini tidak dapat dipinjam");
+        if (pinjamanAnggota.contains(nomorInduk)) {
+            throw new IllegalStateException("Buku ini sudah dipinjam oleh anggota");
         }
-        if (!item.tersedia()) {
-            throw new IllegalStateException("Koleksi tidak tersedia untuk dipinjam");
-        }
-
-        item.kurangiStok();
-        Peminjaman transaksi = new Peminjaman(peminjam, item);
-        this.peminjaman.add(transaksi);
-        return transaksi;
+        buku.kurangiStok();
+        pinjamanAnggota.add(nomorInduk);
     }
 
     public void kembalikan(String nomorAnggota, String nomorInduk) {
-        // TODO 5
-        for (Peminjaman transaksi : this.peminjaman) {
-            if (!transaksi.isDikembalikan()
-                    && transaksi.getAnggota().getNomorAnggota().equals(nomorAnggota)
-                    && transaksi.getKoleksi().getNomorInduk().equals(nomorInduk)) {
-                transaksi.kembalikan();
-                transaksi.getKoleksi().tambahStok();
-                return;
-            }
+        Set<String> pinjamanAnggota = peminjamanAktif.get(nomorAnggota);
+        if (pinjamanAnggota == null || !pinjamanAnggota.remove(nomorInduk)) {
+            throw new IllegalArgumentException("Peminjaman aktif tidak ditemukan");
         }
-        throw new IllegalArgumentException("Peminjaman aktif tidak ditemukan");
-    }
-
-    public List<Koleksi> getKoleksiDipinjam() {
-        List<Koleksi> dipinjam = new ArrayList<>();
-        for (Peminjaman transaksi : this.peminjaman) {
-            if (!transaksi.isDikembalikan()) {
-                dipinjam.add(transaksi.getKoleksi());
-            }
+        Buku buku = cariKoleksi(nomorInduk);
+        if (buku == null) {
+            pinjamanAnggota.add(nomorInduk);
+            throw new IllegalStateException("Buku yang dipinjam tidak lagi terdaftar");
         }
-        return List.copyOf(dipinjam);
-    }
-
-    public List<Peminjaman> getRiwayatPeminjaman(String nomorAnggota) {
-        if (cariAnggota(nomorAnggota) == null) {
-            throw new IllegalArgumentException("Anggota tidak ditemukan");
-        }
-        List<Peminjaman> riwayat = new ArrayList<>();
-        for (Peminjaman transaksi : this.peminjaman) {
-            if (transaksi.getAnggota().getNomorAnggota().equals(nomorAnggota)) {
-                riwayat.add(transaksi);
-            }
-        }
-        return List.copyOf(riwayat);
-    }
-
-    private Anggota cariAnggota(String nomorAnggota) {
-        for (Anggota item : this.anggota) {
-            if (item.getNomorAnggota().equals(nomorAnggota)) {
-                return item;
-            }
-        }
-        return null;
+        buku.tambahStok();
     }
 }

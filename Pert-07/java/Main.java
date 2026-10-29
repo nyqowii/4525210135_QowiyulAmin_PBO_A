@@ -1,5 +1,6 @@
 import model.Buku;
 import model.Jurusan;
+import service.PerpustakaanService;
 
 /**
  * Kompilasi dari folder sesi-07/java:
@@ -44,5 +45,25 @@ public class Main {
         System.out.println();
         System.out.println("  Itulah bedanya: Bab tidak bisa hidup di luar Buku,");
         System.out.println("  tetapi Mahasiswa tetap ada di luar Jurusan.");
+
+        System.out.println();
+        System.out.println("=== Layanan peminjaman ===");
+        PerpustakaanService layanan = new PerpustakaanService();
+        layanan.daftarkanAnggota("A-001");
+        for (int nomor = 1; nomor <= 4; nomor++) {
+            layanan.tambahKoleksi(new Buku("PBO-00" + nomor, "Buku " + nomor, "Penulis", 1));
+        }
+        layanan.pinjam("A-001", "PBO-001");
+        layanan.pinjam("A-001", "PBO-002");
+        layanan.pinjam("A-001", "PBO-003");
+        try {
+            layanan.pinjam("A-001", "PBO-004");
+            System.out.println("  MASALAH: batas tiga pinjaman tidak diterapkan.");
+        } catch (IllegalStateException e) {
+            System.out.println("  Batas tiga pinjaman diterapkan.");
+        }
+        layanan.kembalikan("A-001", "PBO-001");
+        layanan.pinjam("A-001", "PBO-004");
+        System.out.println("  Pengembalian membebaskan kuota dan stok kembali tersedia.");
     }
 }

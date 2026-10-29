@@ -21,28 +21,25 @@ public class Jurusan {
     }
 
     /**
-     * TODO 1: terima objek Mahasiswa dari luar — inilah tanda agregasi.
-     *         Tolak null, dan jangan menambahkan yang sudah terdaftar.
+    * Menerima objek Mahasiswa dari luar dan mencegah pendaftaran ganda.
      */
     public void daftarkan(Mahasiswa m) {
         if (m == null) {
-            throw new IllegalArgumentException("Mahasiswa tidak boleh null");
+            throw new IllegalArgumentException("Mahasiswa tidak boleh kosong");
         }
-        boolean sudahTerdaftar = this.mahasiswa.stream()
-                .anyMatch(terdaftar -> terdaftar.getNim().equals(m.getNim()));
-        if (!sudahTerdaftar) {
-            this.mahasiswa.add(m);
+        if (!mahasiswa.contains(m)) {
+            mahasiswa.add(m);
         }
     }
 
-    /** TODO 2: lepaskan dari jurusan ini. Objeknya TETAP HIDUP di luar sana. */
+    /** Melepaskan mahasiswa tanpa mengubah siklus hidup objeknya. */
     public void keluarkan(Mahasiswa m) {
-        this.mahasiswa.remove(m);
+        mahasiswa.remove(m);
     }
 
-    /** TODO 3: kembalikan salinan tak-berubah. */
+    /** Mengembalikan salinan daftar yang tidak dapat dimodifikasi. */
     public List<Mahasiswa> getMahasiswa() {
-        return List.copyOf(this.mahasiswa);
+        return List.copyOf(mahasiswa);
     }
 
     public String getNama() { return nama; }
